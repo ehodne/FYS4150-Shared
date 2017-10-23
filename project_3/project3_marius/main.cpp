@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int numArguments, char **arguments)
 {
-    int numTimesteps = 200000;
+    int numTimesteps = 100000;
     if(numArguments >= 2) numTimesteps = atoi(arguments[1]);
 
     SolarSystem solarSystem;
@@ -17,7 +17,8 @@ int main(int numArguments, char **arguments)
     // We don't need to store the reference, but just call the function without a left hand side
 
     double M_sun = 2e30;//kg
-    solarSystem.createCelestialBody(vec3(0,0,0), vec3(0,0,0), 1.0 , "the Sun");
+    //solarSystem.createCelestialBody(vec3(-5.2e-3,0,0), vec3(0,-2.79e-3,0), 1.0 , "the Sun"); //This is for 3-body Sun-Earth-Jupiter system
+    solarSystem.createCelestialBody(vec3(-1.02e-2,0,0), vec3(0,-3.51e-3,0), 1.0 , "the Sun");
     solarSystem.createCelestialBody(vec3(0.39, 0, 0), vec3(0, 2*M_PI*0.39/0.24, 0), 3.3e23/M_sun, "Mercury");
     solarSystem.createCelestialBody(vec3(0.72, 0, 0), vec3(0, 2*M_PI*0.72/0.615, 0), 4.9e24/M_sun, "Venus");
     solarSystem.createCelestialBody(vec3(1, 0, 0), vec3(0, 2*M_PI, 0), 3e-6 , "Earth");
@@ -33,7 +34,7 @@ int main(int numArguments, char **arguments)
     vector<CelestialBody> &bodies = solarSystem.bodies();
 
 
-    for(int i = 0; i < bodies.size(); i++) {
+    for(int i = 0; i < (int)bodies.size(); i++) {
 
         CelestialBody &body = bodies[i]; // Reference to this body
         solarSystem.calculateForcesAndEnergy();
@@ -48,7 +49,7 @@ int main(int numArguments, char **arguments)
     Verlet integrator(dt);
     for(int timestep=0; timestep<numTimesteps; timestep++) {
         integrator.integrateOneStep(solarSystem);
-        solarSystem.writeToFile("positions_system.xyz");
+        solarSystem.writeToFile("positions_f.xyz");
         //cout << "Total energy for iteration "<< timestep << " : " << solarSystem.totalEnergy() << endl;
         //cout << "Total angular momentum: " << solarSystem.angularMomentum() << endl;
 
